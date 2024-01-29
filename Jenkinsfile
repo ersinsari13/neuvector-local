@@ -26,13 +26,22 @@ pipeline {
 
         stage('Scan local image') {
             steps {
-            neuvector nameOfVulnerabilityToExemptFour: '', nameOfVulnerabilityToExemptOne: '', nameOfVulnerabilityToExemptThree: '', nameOfVulnerabilityToExemptTwo: '', nameOfVulnerabilityToFailFour: '', nameOfVulnerabilityToFailOne: '', nameOfVulnerabilityToFailThree: '', nameOfVulnerabilityToFailTwo: '', numberOfHighSeverityToFail: '500', numberOfMediumSeverityToFail: '500', registrySelection: 'Local', repository: 'ersinsari/neuvector', scanLayers: true, scanTimeout: 5, standaloneScanner: true, tag: '${BUILD_NUMBER}'
+                neuvector nameOfVulnerabilityToExemptFour: '', nameOfVulnerabilityToExemptOne: '', nameOfVulnerabilityToExemptThree: '', nameOfVulnerabilityToExemptTwo: '', nameOfVulnerabilityToFailFour: '', nameOfVulnerabilityToFailOne: '', nameOfVulnerabilityToFailThree: '', nameOfVulnerabilityToFailTwo: '', numberOfHighSeverityToFail: '500', numberOfMediumSeverityToFail: '500', registrySelection: 'Local', repository: 'ersinsari/neuvector', scanLayers: true, scanTimeout: 3, standaloneScanner: true, tag: '${BUILD_NUMBER}'
             }
         }
         stage('Push Images to Docker-Hub') {
             steps {
-                echo "Pushing  App Images to Repo"
-                sh "docker push 'ersinsari/neuvector:${BUILD_NUMBER}'"
+                script {
+                    def dockerCredentialsId = 'docker-hub-cred'
+                     withCredentials([usernamePassword(credentialsId: dockerCredentialsId, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                       sh """
+                            docker login -u \${DOCKER_USERNAME} -p \${DOCKER_PASSWORD}
+                        """
+                       echo "Pushing  App Images to Repo"
+                       sh "docker push 'ersinsari/neuvector:${BUILD_NUMBER}'"
+                     }    
+                }
+
             }
         }
 

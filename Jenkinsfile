@@ -26,7 +26,7 @@ pipeline {
 
         stage('Scan local image') {
             steps {
-                neuvector nameOfVulnerabilityToExemptFour: '', nameOfVulnerabilityToExemptOne: '', nameOfVulnerabilityToExemptThree: '', nameOfVulnerabilityToExemptTwo: '', nameOfVulnerabilityToFailFour: '', nameOfVulnerabilityToFailOne: '', nameOfVulnerabilityToFailThree: '', nameOfVulnerabilityToFailTwo: '', numberOfHighSeverityToFail: '500', numberOfMediumSeverityToFail: '500', registrySelection: 'Local', repository: 'ersinsari/neuvector', scanLayers: true, scanTimeout: 5, standaloneScanner: true, tag: '${BUILD_NUMBER}'
+                neuvector nameOfVulnerabilityToExemptFour: '', nameOfVulnerabilityToExemptOne: '', nameOfVulnerabilityToExemptThree: '', nameOfVulnerabilityToExemptTwo: '', nameOfVulnerabilityToFailFour: '', nameOfVulnerabilityToFailOne: '', nameOfVulnerabilityToFailThree: '', nameOfVulnerabilityToFailTwo: '', numberOfHighSeverityToFail: '500', numberOfMediumSeverityToFail: '500', registrySelection: 'rmt', repository: 'ersinsari/neuvector', scanLayers: true, scanTimeout: 5, standaloneScanner: true, tag: '${BUILD_NUMBER}'
             }
         }
         stage('Push Images to Docker-Hub') {
